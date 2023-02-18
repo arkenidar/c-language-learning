@@ -1,0 +1,15 @@
+
+# install geany and libVTE
+
+sudo apt install geany libvte9
+
+# geany's "set build commands" (menu: build)
+
+build menu -> build:
+gcc -Wall -o "%e.bin" "%f" -lm
+
+build menu -> execute:
+./%e.bin
+
+clean:
+rm *.bin
