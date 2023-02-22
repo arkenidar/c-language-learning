@@ -36,14 +36,37 @@ char* skip_spaces(char* cursor){
     return cursor;
 }
 
+int line_main( int argc, char** argv );
+
 int main( int argc, char** argv )
+{
+    if(argc<=1)
+    {
+        while(1)
+        {
+            line_main( argc, argv );
+        }
+    }
+    else
+    {
+        return line_main( argc, argv );
+    }
+    return 0;
+}
+
+int line_main( int argc, char** argv )
 {
     if(argc<=1){
         char line[101];
         int count=1;
         char* vector[4]={0};
-
-        puts("insert a line to calculate"); gets(line);
+        
+        puts("insert a line to calculate"); int successfully = scanf("%100[^\n]", line);
+        // flushes the standard input
+        // (clears the input buffer)
+        while ((getchar()) != '\n');
+        if(successfully != 1) print_usage();
+        
         puts(line);
         char* cursor = line;
         cursor = skip_spaces(cursor);
