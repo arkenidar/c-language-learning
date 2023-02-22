@@ -27,18 +27,55 @@ void print_usage(){
     exit(1);
 }
 
+char* skip_spaces(char* cursor){
+    while(1){
+        if(cursor[0]== '\0' ) break;
+        if(cursor[0]!= ' ' ) break;
+        cursor++;
+    }
+    return cursor;
+}
+
 int main( int argc, char** argv )
 {
+    if(argc<=1){
+        char line[101];
+        int count=1;
+        char* vector[4]={0};
+
+        puts("insert a line to calculate"); gets(line);
+        puts(line);
+        char* cursor = line;
+        cursor = skip_spaces(cursor);
+        char* previous = cursor;
+        while(1){
+            if(cursor[0] == ' ' || cursor[0] == '\0' ){
+                vector[count] = previous;
+                count++;
+                char* end = cursor;
+                cursor = skip_spaces(cursor);
+                previous = cursor;
+                int is_terminated = end[0]== '\0' ? 1 : 0;
+                end[0]='\0';
+                if(is_terminated || count>=4) break;
+            }
+            cursor++;
+        }
+        argc = count;
+        argv = vector;
+    }
+
+    printf("argc: %d\n", argc);
+    for(int i=1; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
+
     if(argc != 4) print_usage();
-    
-    ///for(int i=0; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
-    
+
     char* operator = argv[2];
     double x=atof(argv[1]),y=atof(argv[3]);
 
     ///printf("%f %s %f\n", x, operator, y);
     print_double(x); printf(" %s ",operator); print_double(y); puts("");
-    
+
     double result=0;
 
     if(strcmp(operator,"+")==0) result = x + y;
@@ -49,8 +86,8 @@ int main( int argc, char** argv )
     else if(strcmp(operator,"^")==0) result = pow(x , y);
     else { printf("unrecognized operator: {%s}\n", operator);
         print_usage(); }
-    
+
     printf("result: "); print_double(result); puts("");
-    
+
     return 0;
 }
