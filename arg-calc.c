@@ -22,7 +22,7 @@ void print_double(double number){
 }
 
 void print_usage(){
-    char * usage = "use with: arg-calc {number} {+|-|.|/|//|^} {number}";
+    char * usage = "use with: arg-calc {number} {+|-|x|/|//|^} {number}";
     puts(usage);
     exit(1);
 }
@@ -103,7 +103,7 @@ int line_main( int argc, char** argv )
 
     if(strcmp(operator,"+")==0) result = x + y;
     else if(strcmp(operator,"-")==0) result = x - y;
-    else if(strcmp(operator,".")==0) result = x * y;
+    else if(strcmp(operator,"x")==0) result = x * y;
     else if(strcmp(operator,"/")==0) result = x / y;
     else if(strcmp(operator,"//")==0) result = trunc(x / y);
     else if(strcmp(operator,"^")==0) result = pow(x , y);
