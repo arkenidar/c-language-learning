@@ -59,7 +59,7 @@ int line_main( int argc, char** argv )
     if(argc<=1){
         char line[101];
         int count=1;
-        char* vector[4]={0};
+        char* vector[100]={0};
         
         puts("insert a line to calculate"); int successfully = scanf("%100[^\n]", line);
         // flushes the standard input
@@ -80,7 +80,7 @@ int line_main( int argc, char** argv )
                 previous = cursor;
                 int is_terminated = end[0]== '\0' ? 1 : 0;
                 end[0]='\0';
-                if(is_terminated || count>=4) break;
+                if(is_terminated || count >= (sizeof(vector)/sizeof(char*)) ) break;
             }
             cursor++;
         }
@@ -91,27 +91,33 @@ int line_main( int argc, char** argv )
     printf("argc: %d\n", argc);
     for(int i=1; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
 
-    if(argc != 4) print_usage();
+    if(argc %2==1 ) print_usage();
+    
+    double x=atof(argv[1]);
+    for(int i=2; (i+1)<argc; i+=2){
+    
+        char* operator = argv[i];
+        double y=atof(argv[i+1]);
 
-    char* operator = argv[2];
-    double x=atof(argv[1]),y=atof(argv[3]);
+        ///printf("%f %s %f\n", x, operator, y);
+        print_double(x); printf(" %s ",operator); print_double(y); puts("");
 
-    ///printf("%f %s %f\n", x, operator, y);
-    print_double(x); printf(" %s ",operator); print_double(y); puts("");
+        double result=0;
 
-    double result=0;
+        if(strcmp(operator,"+")==0) result = x + y;
+        else if(strcmp(operator,"-")==0) result = x - y;
+        else if(strcmp(operator,"x")==0) result = x * y;
+        else if(strcmp(operator,"/")==0) result = x / y;
+        else if(strcmp(operator,"//")==0) result = trunc(x / y);
+        else if(strcmp(operator,"%")==0) result = (long)trunc(x) % (long)trunc(y);
+        else if(strcmp(operator,"^")==0) result = pow(x , y);
+        else { printf("unrecognized operator: {%s}\n", operator);
+            print_usage(); }
+        
+        x = result;
+    }
 
-    if(strcmp(operator,"+")==0) result = x + y;
-    else if(strcmp(operator,"-")==0) result = x - y;
-    else if(strcmp(operator,"x")==0) result = x * y;
-    else if(strcmp(operator,"/")==0) result = x / y;
-    else if(strcmp(operator,"//")==0) result = trunc(x / y);
-    else if(strcmp(operator,"%")==0) result = (long)trunc(x) % (long)trunc(y);
-    else if(strcmp(operator,"^")==0) result = pow(x , y);
-    else { printf("unrecognized operator: {%s}\n", operator);
-        print_usage(); }
-
-    printf("result: "); print_double(result); puts("");
+    printf("result: "); print_double(x); puts("");
 
     return 0;
 }
