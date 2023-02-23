@@ -22,7 +22,7 @@ void print_double(double number){
 }
 
 void print_usage(){
-    char * usage = "use with: arg-calc {number} {+|-|x|/|//|%|^} {number}";
+    char * usage = "use with: arg-calc {number} {+|-|*|/|//|%|^} {number}";
     puts(usage);
     exit(1);
 }
@@ -99,22 +99,16 @@ int line_main( int argc, char** argv )
         char* operator = argv[i];
         double y=atof(argv[i+1]);
 
-        ///printf("%f %s %f\n", x, operator, y);
         print_double(x); printf(" %s ",operator); print_double(y); puts("");
 
-        double result=0;
-
-        if(strcmp(operator,"+")==0) result = x + y;
-        else if(strcmp(operator,"-")==0) result = x - y;
-        else if(strcmp(operator,"x")==0) result = x * y;
-        else if(strcmp(operator,"/")==0) result = x / y;
-        else if(strcmp(operator,"//")==0) result = trunc(x / y);
-        else if(strcmp(operator,"%")==0) result = (long)trunc(x) % (long)trunc(y);
-        else if(strcmp(operator,"^")==0) result = pow(x , y);
-        else { printf("unrecognized operator: {%s}\n", operator);
-            print_usage(); }
-        
-        x = result;
+             if(0==strcmp(operator, "+" )) x = x + y;
+        else if(0==strcmp(operator, "-" )) x = x - y;
+        else if(0==strcmp(operator, "*" )) x = x * y;
+        else if(0==strcmp(operator, "/" )) x = x / y;
+        else if(0==strcmp(operator, "//")) x = trunc(x / y);
+        else if(0==strcmp(operator, "%" )) x = (long)trunc(x) % (long)trunc(y);
+        else if(0==strcmp(operator, "^" )) x = pow(x , y);
+        else { printf("unrecognized operator: {%s}\n", operator); print_usage(); }
     }
 
     printf("result: "); print_double(x); puts("");
