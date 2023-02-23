@@ -1,0 +1,11 @@
+
+operators
+
+$string_variable +++ (strings concatenation)
+#number_variable + - x / // % ^ (sum, difference, multiplication, division, integer division, modulus, exponentiation)
+
+\table_object_variable ..attribute_name [[ 123(|)#index_variable(|)"key_value"(|)$key_variable ]]
+function call : table/JSON arguments
+
+|<| comments |>|
+<" extended strings ">
