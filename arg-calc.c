@@ -54,19 +54,66 @@ int main( int argc, char** argv )
     return 0;
 }
 
+int parse_number(double* parsed, char* line){
+    int string_length = strlen(line);
+    ///printf("string_length: {%d}\n", string_length);
+    if(string_length < 1) return 2;
+
+    double out = 0;
+    int parsable = 1;
+    int minus = 0;
+    int dot_index = -1;
+    int index;
+    for( index = 0; index < string_length; index++ ){
+        char character = line[index];
+
+        if(index==0 && character=='-') minus = 1;
+        else
+        if(character>='0' && character<='9'){
+            int digit = character - '0';
+            out = out * 10;
+            out = out + digit;
+        }
+        else
+        if(character=='.' && dot_index == -1 && index>0){
+            dot_index = index;
+        }
+        else{
+            printf("invalid character: {%c}\n", character);
+            puts("exiting...");
+            parsable = 0;
+            break;
+        }
+    }
+    if(minus) out = -out;
+    if( dot_index != -1 ){
+        int places = index - 1 - dot_index;
+        ///printf("places: {%d}\n", places);
+        out = out / pow(10, places);
+    }
+    if(!parsable){ puts("not parsable"); return 1; }
+
+    *parsed = out;
+
+    ///printf("out: {%f}\n", out);
+    ///printf("out: {"); print_double(out); printf("}\n");
+
+    return 0;
+}
+
 int line_main( int argc, char** argv )
 {
     if(argc<=1){
         char line[101];
         int count=1;
         char* vector[100]={0};
-        
+
         puts("insert a line to calculate"); int successfully = scanf("%100[^\n]", line);
         // flushes the standard input
         // (clears the input buffer)
         while ((getchar()) != '\n');
         if(successfully != 1) print_usage();
-        
+
         puts(line);
         char* cursor = line;
         cursor = skip_spaces(cursor);
@@ -92,12 +139,14 @@ int line_main( int argc, char** argv )
     for(int i=1; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
 
     if(argc %2==1 ) print_usage();
-    
-    double x=atof(argv[1]);
+
+    ///double x=atof(argv[1]);
+    double x=0; parse_number(&x, argv[1]);
     for(int i=2; (i+1)<argc; i+=2){
-    
+
         char* operator = argv[i];
-        double y=atof(argv[i+1]);
+        ///double y=atof(argv[i+1]);
+        double y=0; parse_number(&y, argv[i+1]);
 
         print_double(x); printf(" %s ",operator); print_double(y); puts("");
 
