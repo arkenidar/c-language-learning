@@ -7,7 +7,7 @@
 void print_usage(){
     char * usage = "use with: arg-calc {number} {+|-|*|/|//|%|^} {number}";
     puts(usage);
-    exit(1);
+    ///exit(1);
 }
 
 char* skip_spaces(char* cursor){
@@ -27,7 +27,9 @@ int main( int argc, char** argv )
     {
         while(1)
         {
-            line_main( argc, argv );
+            int return_code = line_main( argc, argv );
+            if(return_code == EXIT_FAILURE)
+                return return_code;
         }
     }
     else
@@ -48,9 +50,10 @@ int line_main( int argc, char** argv )
         // flushes the standard input
         // (clears the input buffer)
         while ((getchar()) != '\n');
-        if(successfully != 1) print_usage();
+        ///if(successfully != 1) print_usage();
+        if(successfully != 1) strcpy(line,"");
 
-        puts(line);
+        ///puts(line); // DEBUG tool
         char* cursor = line;
         cursor = skip_spaces(cursor);
         char* previous = cursor;
@@ -71,20 +74,30 @@ int line_main( int argc, char** argv )
         argv = vector;
     }
 
-    printf("argc: %d\n", argc);
-    for(int i=1; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
+    /// DEBUG tool
+    ///printf("argc: %d\n", argc);
+    ///for(int i=1; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
 
-    if(argc %2==1 ) print_usage();
+    if(argc %2==1 ) { print_usage(); return EXIT_FAILURE; }
 
     ///double x=atof(argv[1]);
-    double x=0; parse_number(&x, argv[1]);
+    double x=0; int return_code = parse_number(&x, argv[1]);
+    if(return_code != PARSE_NUMBER_SUCCESS){
+        puts("parse number error: not a valid number format!");
+        return EXIT_FAILURE;
+    }
     for(int i=2; (i+1)<argc; i+=2){
 
         char* operator = argv[i];
         ///double y=atof(argv[i+1]);
-        double y=0; parse_number(&y, argv[i+1]);
+        double y=0; int return_code = parse_number(&y, argv[i+1]);
+        if(return_code != PARSE_NUMBER_SUCCESS){
+            puts("parse number error: not a valid number format!");
+            return EXIT_FAILURE;
+        }
 
-        print_double(x); printf(" %s ",operator); print_double(y); puts("");
+        /// DEBUG tool
+        ///print_double(x); printf(" %s ",operator); print_double(y); puts("");
 
              if(0==strcmp(operator, "+" )) x = x + y;
         else if(0==strcmp(operator, "-" )) x = x - y;
@@ -93,7 +106,7 @@ int line_main( int argc, char** argv )
         else if(0==strcmp(operator, "//")) x = trunc(x / y);
         else if(0==strcmp(operator, "%" )) x = (long)trunc(x) % (long)trunc(y);
         else if(0==strcmp(operator, "^" )) x = pow(x , y);
-        else { printf("unrecognized operator: {%s}\n", operator); print_usage(); }
+        else { printf("unrecognized operator: {%s}\n", operator); print_usage(); return EXIT_FAILURE; }
     }
 
     printf("result: "); print_double(x); puts("");

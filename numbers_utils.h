@@ -23,16 +23,20 @@ void print_double(double number){
     printf("%s",buffer);
 }
 
+#define PARSE_NUMBER_SUCCESS -2
+#define PARSE_NUMBER_EMPTY_STRING -1
+
 int parse_number(double* parsed, char* line){
     int string_length = strlen(line);
     ///printf("string_length: {%d}\n", string_length);
-    if(string_length < 1) return 2;
+    if(string_length < 1) return PARSE_NUMBER_EMPTY_STRING;
 
     double out = 0;
-    int parsable = 1;
+    ///int parsable = 1;
     int minus = 0;
     int dot_index = -1;
     int index;
+    int return_code = PARSE_NUMBER_SUCCESS;
     for( index = 0; index < string_length; index++ ){
         char character = line[index];
 
@@ -48,9 +52,10 @@ int parse_number(double* parsed, char* line){
             dot_index = index;
         }
         else{
-            printf("invalid character: {%c}\n", character);
-            puts("exiting...");
-            parsable = 0;
+            ///printf("invalid character: {%c}\n", character);
+            ///puts("exiting...");
+            ///parsable = 0;
+            return_code = index;
             break;
         }
     }
@@ -60,14 +65,14 @@ int parse_number(double* parsed, char* line){
         ///printf("places: {%d}\n", places);
         out = out / pow(10, places);
     }
-    if(!parsable){ puts("not parsable"); return 1; }
+    ///if(!parsable){ puts("not parsable"); return 1; }
 
     *parsed = out;
 
     ///printf("out: {%f}\n", out);
     ///printf("out: {"); print_double(out); printf("}\n");
 
-    return 0;
+    return return_code;
 }
 
 #endif
