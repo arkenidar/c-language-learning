@@ -44,7 +44,7 @@ int parse_number(double* parsed, char* line){
             out = out + digit;
         }
         else
-        if(character=='.' && dot_index == -1 && index>0){
+        if(character=='.' && dot_index == -1 && index>0 && index<(string_length-1) ){
             dot_index = index;
         }
         else{
