@@ -1,11 +1,12 @@
+
+typedef struct _pair{ int x,y; } pair;
+pair swap(pair from){ return (pair){ .x=from.y, .y=from.x }; }
+
 #include <stdio.h>
-typedef struct _pair{ int x,y; } pair; // define "pair"
-pair swap(pair from){ // not necessarily defined (one life suffices)
-    pair to={ .x=from.y, .y=from.x }; // init "to" pair
-    return to;
-}
 int main(){
-    pair to = swap((pair){ .x=1, .y=2 }); // swap and assign
-    printf(" to: x=%d; y=%d \n", to.x, to.y); // print results
+
+    pair to = swap((pair){ .x=1, .y=2 });
+    printf(" to: x=%d; y=%d \n", to.x, to.y);
+
     return 0;
 }
