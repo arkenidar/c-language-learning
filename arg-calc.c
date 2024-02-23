@@ -1,3 +1,5 @@
+// gcc arg-calc.c -o arg-calc
+
 #include "numbers_utils.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +25,14 @@ int line_main( int argc, char** argv );
 
 int main( int argc, char** argv )
 {
-    if(argc<=1)
+
+    /// debug tool
+    /// for(int i=0; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
+
+    // skip first argument:
+    argc--; argv++; // fix
+
+    if(argc<=0)
     {
         while(1)
         {
@@ -41,7 +50,7 @@ int main( int argc, char** argv )
 
 int line_main( int argc, char** argv )
 {
-    if(argc<=1){
+    if(argc<=0){
         char line[101];
         int count=1;
         char* vector[100]={0};
@@ -72,21 +81,23 @@ int line_main( int argc, char** argv )
         }
         argc = count;
         argv = vector;
+
+        argc--; argv++; // fix
     }
 
     /// DEBUG tool
-    ///printf("argc: %d\n", argc);
-    ///for(int i=1; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
+    //printf("argc: %d\n", argc);
+    //for(int i=0; i<argc; i++) printf(" i:{%d} arg:{%s} \n", i, argv[i]);
 
-    if(argc %2==1 ) { print_usage(); return EXIT_FAILURE; }
+    if(argc %2==0 ) { print_usage(); return EXIT_FAILURE; }
 
-    ///double x=atof(argv[1]);
-    double x=0; int return_code = parse_number(&x, argv[1]);
+    ///double x=atof(argv[0]);
+    double x=0; int return_code = parse_number(&x, argv[0]);
     if(return_code != PARSE_NUMBER_SUCCESS){
         puts("parse number error: not a valid number format!");
         return EXIT_FAILURE;
     }
-    for(int i=2; (i+1)<argc; i+=2){
+    for(int i=1; i<argc; i+=2){
 
         char* operator = argv[i];
         ///double y=atof(argv[i+1]);
