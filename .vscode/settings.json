@@ -1,0 +1,8 @@
+{
+    // extension: xaver.clang-format
+    // shell: sudo apt install clang-format
+    // shell: which clang-format
+    "clang-format.executable": "/usr/bin/clang-format",
+    // format on save
+    "editor.formatOnSave": true
+}
