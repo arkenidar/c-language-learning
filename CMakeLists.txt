@@ -1,7 +1,12 @@
 cmake_minimum_required(VERSION 3.10)
-
-# Set the project name
 project(CLanguageLearning)
 
-# Add an executable
-add_executable(ASCII_Case ascii-case.c)
+add_executable(arg-calc arg-calc.c)
+target_link_libraries(arg-calc m)
+add_executable(arg arg.c)
+add_executable(ascii-case ascii-case.c)
+add_executable(atof atof.c)
+target_link_libraries(atof m)
+add_executable(for for.c)
+add_executable(numbers numbers.c)
+add_executable(swap-trick swap-trick.c)
